@@ -1,0 +1,1 @@
+https://github.com/davidstutz/bootstrap-multiselect/commit/610fb7ad4e4576194870b205c6f47b0ada982495

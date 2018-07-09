@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+
+  website:
+    build: .
+    command: >
+      gunicorn -c "python:config.gunicorn" --reload "msbwtsearch.app:create_app()"
+    env_file:
+      - '.env'
+    volumes:
+      - '.:/app/msbwtsearch'
+      - './data:/app/msbwtsearch/data'
+    ports:
+      - '9000:9000'
+
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server
+    volumes:
+      - 'redis:/var/lib/redis/data'
+    ports:
+      - '6379:6379'
+
+  celery:
+    build: .
+    command: celery worker -l info -A msbwtsearch.modules.api.tasks -E
+    env_file:
+      - '.env'
+    volumes:
+      - '.:/app/msbwtsearch'
+      - './data:/app/msbwtsearch/data'
+
+  flower:
+    build: .
+    command: flower -A msbwtsearch.modules.api.tasks --port=5555
+    env_file:
+      - '.env'
+    volumes:
+      - '.:/app/msbwtsearch'
+      - './data:/app/msbwtsearch/data'
+    ports:
+      - '5555:5555'
+
+
+volumes:
+  redis:
+
+networks:
+  default:
+    external:
+      name: proj1_test

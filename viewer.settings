@@ -1,0 +1,88 @@
+###############################################################################
+#
+# API CONFIGURATION
+#
+###############################################################################
+
+API_R_BASE = 'http://myapi:8000'
+
+
+###############################################################################
+#
+# DISPLAY CONFIGURATION (Overrides)
+#
+###############################################################################
+
+MAIN_TITLE = 'QTL Viewer'
+
+CHROMOSOMES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+               '11', '12', '13', '14', '15', '16', '17', '18', '19',
+               'X']
+
+#PLOT_LOD_LINES = [
+#    {'val':6.52, 'color':'#DAA520', 'text':'80%'},
+#    {'val':7.38, 'color':'red', 'text':'95%'}
+#]
+
+PLOT_LOD_XAXIS_TEXT = 'LOD'
+
+#PLOT_EFFECT_STRAINS = [
+#    {'key':'A', 'color':"#F0F000", 'name':"A/J"},
+#    {'key':'B', 'color':"#808080", 'name':"C57BL/6J"},
+#    {'key':'C', 'color':"#F08080", 'name':"129S1/SvImJ"},
+#    {'key':'D', 'color':"#1010F0", 'name':"NOD/ShiLtJ"},
+#    {'key':'E', 'color':"#00A0F0", 'name':"NZO/H1LtJ"},
+#    {'key':'F', 'color':"#00A000", 'name':"CAST/EiJ"},
+#    {'key':'G', 'color':"#F00000", 'name':"PWK/PhJ"},
+#    {'key':'H', 'color':"#9000E0", 'name':"WSB/EiJ"}
+#]
+
+PLOT_EFFECT_STRAINS = [
+    {'key':'A', 'color':"#f9c922", 'name':"A/J"},
+    {'key':'B', 'color':"#888888", 'name':"C57BL/6J"},
+    {'key':'C', 'color':"#F08080", 'name':"129S1/SvImJ"},
+    {'key':'D', 'color':"#0064C9", 'name':"NOD/ShiLtJ"},
+    {'key':'E', 'color':"#7FDBFF", 'name':"NZO/H1LtJ"},
+    {'key':'F', 'color':"#2ECC40", 'name':"CAST/EiJ"},
+    {'key':'G', 'color':"#FF4136", 'name':"PWK/PhJ"},
+    {'key':'H', 'color':"#B10DC9", 'name':"WSB/EiJ"}
+]
+LOGIN_REQUIRED=False
+LOGIN_USERID='ADMIN'
+LOGIN_PASSWORD='PASSWORD'
+
+
+PLOT_BLUP = False
+
+TESTING123='hi'
+
+API_R_NUM_CORES=5
+
+
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+#CELERY_TASK_RESULT_EXPIRES=60
+#CELERYBEAT_SCHEDULER='celery.beat:PersistentScheduler'
+
+#CELERYBEAT_SCHEDULE = {
+#    'task-number-one': {
+#        'task': 'celery.backend_cleanup',
+#        'schedule': 'crontab(hour="*/1")',
+#    }
+#}
+
+
+
+LOG_LEVEL = 'DEBUG' # CRITICAL / ERROR / WARNING / INFO / DEBUG
+
+
+COMPRESS_MIMETYPES = [
+    'text/html',
+    'text/css',
+    'text/xml',
+    'application/json',
+    'application/javascript'
+]
+
+
+

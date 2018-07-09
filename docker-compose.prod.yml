@@ -1,0 +1,67 @@
+version: "3"
+
+services:
+  api:
+    image: mattjvincent/qtlapi:latest
+    env_file:
+      - '.env'
+    ports:
+     - "8000"
+    volumes:
+     - ${FILE_RDATA}:/app/qtlapi/data/api.RData
+     - ${FILE_SNPDB}:/app/qtlapi/data/ccfounders.sqlite
+
+  haproxy:
+    image: dockercloud/haproxy:1.6.7
+    env_file:
+      - '.env'
+    environment:
+      - TIMEOUT=connect 5000, client 300000, server 300000
+    ports:
+      - ${PORT_API}:80
+      - ${PORT_HAPROXY_ADMIN}:1936
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    links:
+      - api
+
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server
+    ports:
+      - ${PORT_REDIS}:6379
+    volumes:
+      - 'redis:/var/lib/redis/data'
+
+  website:
+    image: mattjvincent/qtlweb:latest
+    env_file:
+      - '.env'
+    ports:
+      - ${PORT_GUNICORN}:${PORT_GUNICORN}
+    volumes:
+      - ${FILE_QTLVIEWER_SETTINGS}:${QTLVIEWER_SETTINGS}
+    command: >
+      gunicorn -w ${GUNICORN_WORKERS} -b 0.0.0.0:${PORT_GUNICORN} "qtlweb.app:create_app()"
+
+  celery:
+    image: mattjvincent/qtlweb:latest
+    command: celery worker -l info -A qtlweb.modules.api.tasks
+    env_file:
+      - '.env'
+    volumes:
+      - ${FILE_QTLVIEWER_SETTINGS}:${QTLVIEWER_SETTINGS}
+
+  flower:
+    image: mattjvincent/qtlweb:latest
+    command: flower -A qtlweb.modules.api.tasks --port=5555
+    env_file:
+      - '.env'
+    ports:
+      - '${PORT_FLOWER}:5555'
+    volumes:
+      - ${FILE_QTLVIEWER_SETTINGS}:${QTLVIEWER_SETTINGS}
+
+volumes:
+  redis:
+
